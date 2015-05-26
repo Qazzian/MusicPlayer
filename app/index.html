@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!--<link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">-->
   <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 <body>
@@ -23,24 +24,45 @@
 
   <div class="container-fluid">
 
-    <div class="row">
+    <div ng-controller="playlistCtrl" class="row">
 
 
 
-    <section class="playerSection col-lg-4 col-md-4 col-sm-4 col-xs-4">
-      <div>
-        <p>player controls here</p>
+    <section ng-controller="playerCtrl" class="playerSection col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <div class="player">
+        <div class="playerControls">
+          <i ng-click="prev()" class="fa fa-step-backward" title="Previous track"></i>
+          <i ng-click="play()" class="fa fa-play" ng-class="playerState === 'playing' ? 'active' : ''" title="play"></i>
+          <i ng-click="pause()" class="fa fa-pause" ng-class="playerState === 'paused' ? 'active' : ''" title="pause"></i>
+          <i ng-click="stop()" class="fa fa-stop" ng-class="playerState === 'stopped' ? 'active' : ''" title="stop
+          "></i>
+          <i ng-click="next()" class="fa fa-step-forward" title="next track"></i>
+        </div>
+        <div class="trackDuration">
+          <span class="durationPlayed">{{currentTrackTime}}</span>
+          <span class="durationTotal">{{currentSong.duration}}</span>
+          <span class="durationBar" ng-style="{left: currentTrackPercent+'%'}"></span>
+
+        </div>
       </div>
+
       <div>
-        <p>Current playing song here</p>
-      </div>
-      <div>
-        <p>Current playlist here</p>
+        <ul class="playlist" ng-click="onPlaylistClick($event)">
+          <li ng-repeat="song in playlist track by $index" ng-class="$index === currentSongIndex ? 'playing' : ''">
+            <span><strong>{{song.title}}</strong></span>
+            <p>by <em>{{song.artist}}</em></p>
+
+            <div class="playlistSongControls">
+              <a class="playSong" data-song-index="{{$index}}" href="#">Play now</a>
+              <i class="fa fa-trash playlistRemoveTrack" data-song-index="{{$index}}" title="remove track from playlist"></i>
+            </div>
+          </li>
+        </ul>
       </div>
     </section>
 
 
-      <section class="searchSection col-lg-8 col-md-8 col-sm-8 col-xs-8" ng-controller="musicSearchCtrl">
+      <section ng-controller="musicSearchCtrl" class="searchSection col-lg-8 col-md-8 col-sm-8 col-xs-8" >
         <div>
           <form action="">
             <p>
@@ -58,11 +80,16 @@
             </p>
           </form>
         </div>
+
+
         <div>
-          <ul class="searchResults">
+          <ul ng-click="searchResultsClick($event)" class="searchResults">
             <li ng-repeat="song in availableSongs | filter:searchQuery | orderBy:searchOrderBy">
-              <span>{{song.title}}</span>
-              <p>by {{song.artist}}</p>
+              <span><strong>{{song.title}}</strong></span>
+              <p>by <em>{{song.artist}}</em></p>
+              <div class="songControls">
+                <a class="addSong" data-song-id="{{song.id}}" href="#">Add to playlist</a>
+              </div>
             </li>
           </ul>
         </div>
@@ -75,6 +102,7 @@
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
+  <script src="bower_components/lodash/lodash.min.js  "></script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="app.js"></script>
   <script src="views/search/searchView.js"></script>
