@@ -41,7 +41,9 @@
         <div class="trackDuration">
           <span class="durationPlayed">{{currentTrackTime}}</span>
           <span class="durationTotal">{{currentSong.duration}}</span>
-          <span class="durationBar" ng-style="{left: currentTrackPercent+'%'}"></span>
+          <div class="durationBar">
+            <span class="durationBarMarker" ng-style="{left: currentTrackPercent+'%'}"></span>
+          </div>
 
         </div>
       </div>
