@@ -46,7 +46,11 @@ musicApp.controller('playerCtrl', ['$scope', '$interval', function ($scope, $int
   };
 
 
-
+  /**
+   * Event delegation to save on browser memory.
+   * Handle click events on the playlist
+   * @param $event
+   */
   $scope.onPlaylistClick = function($event){
     var songIndex;
 
@@ -147,6 +151,11 @@ musicApp.controller('playerCtrl', ['$scope', '$interval', function ($scope, $int
 
 }]);
 
+
+
+/***
+ * Music search controller
+ */
 musicApp.controller('musicSearchCtrl', ['$scope', '$http', function($scope, $http){
   $http.get('/private/songs.json').success(function(data){
     $scope.availableSongs = data;
@@ -155,6 +164,10 @@ musicApp.controller('musicSearchCtrl', ['$scope', '$http', function($scope, $htt
     });
   });
 
+  /**
+   * Event delegation again
+   * @param $event
+   */
   $scope.searchResultsClick = function($event) {
     console.info('Broser event: ', $event);
 
